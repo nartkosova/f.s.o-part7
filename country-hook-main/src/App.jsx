@@ -1,27 +1,39 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const useField = (type) => {
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState('');
 
   const onChange = (event) => {
-    setValue(event.target.value)
-  }
+    setValue(event.target.value);
+  };
 
   return {
     type,
     value,
-    onChange
-  }
-}
+    onChange,
+  };
+};
 
 const useCountry = (name) => {
-  const [country, setCountry] = useState(null)
+  const [country, setCountry] = useState(null);
 
-  useEffect(() => {})
+  useEffect(() => {
+    if (name) {
+      axios
+        .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${name}`)
+        .then((response) => {
+          console.log(response.data);
+          setCountry({ data: response.data[0], found: true });
+        })
+        .catch(() => {
+          setCountry({ found: false });
+        });
+    }
+  }, [name]);
 
-  return country
-}
+  return country;
+};
 
 const Country = ({ country }) => {
   if (!country) {
@@ -46,15 +58,16 @@ const Country = ({ country }) => {
   )
 }
 
+
 const App = () => {
-  const nameInput = useField('text')
-  const [name, setName] = useState('')
-  const country = useCountry(name)
+  const nameInput = useField('text');
+  const [name, setName] = useState('');
+  const country = useCountry(name);
 
   const fetch = (e) => {
-    e.preventDefault()
-    setName(nameInput.value)
-  }
+    e.preventDefault();
+    setName(nameInput.value);
+  };
 
   return (
     <div>
@@ -62,10 +75,9 @@ const App = () => {
         <input {...nameInput} />
         <button>find</button>
       </form>
-
       <Country country={country} />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
