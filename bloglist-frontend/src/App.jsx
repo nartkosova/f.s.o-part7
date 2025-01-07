@@ -5,11 +5,12 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
-import { Container, Navbar, Button } from 'react-bootstrap'
+import { Container, Button } from 'react-bootstrap'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import UserTable from './components/UserTable'
 import UserBlogs from './components/UserBlogs'
 import BlogView from './components/BlogView'
+import Navbar from './components/Navbar'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -152,27 +153,26 @@ const App = () => {
       </div>
     )
   }
+  const Blogs = ( handleDelete, handleLike ) => {
+    return (
+      <div>
+        {blogForm()}
+        {sortedBlogs.map((blog) => (
+          <Blog key={blog.id} blog={blog} handleDelete={handleDelete} handleLike={handleLike}/>
+        ))}
+      </div>
+    )
+  }
 
   return (
     <div>
       <Notification message={notification} isError={isError} />
+      <Navbar user={user} handleLogout={handleLogout} handleLogin={handleLogin}/>
       <h2>Blogs</h2>
-      <p>
-        {user.name} is logged in{' '}
-        <button onClick={handleLogout}>logout</button>
-      </p>
-      {blogForm()}
-      {sortedBlogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} handleDelete={handleDelete} handleLike={handleLike}/>
-      ))}
-
       <Routes>
+        <Route path='/' element={<Blogs handleDelete={handleDelete} handleLike={handleLike}/>}/>
         <Route path="/users" element={<UserTable users={userBlogsCount}/>} />
-      </Routes>
-      <Routes>
         <Route path="/users/:id" element={<UserBlogs />} />
-      </Routes>
-      <Routes>
         <Route path="/blogs/:id" element={<BlogView handleLike={handleLike}/>} />
       </Routes>
     </div>
