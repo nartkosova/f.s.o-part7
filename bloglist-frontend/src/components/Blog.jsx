@@ -1,41 +1,28 @@
-import { useState } from "react";
-import blogService from "../services/blogs";
-import PropTypes from "prop-types";
+import { useState } from 'react'
+import PropTypes from 'prop-types'
+import { Link, useParams } from 'react-router-dom'
 
-const Blog = ({ blog, updateBlog, handleDelete }) => {
-  const [visible, setVisible] = useState(false);
+const Blog = ({ blog, updateBlog, handleDelete, handleLike }) => {
+  const { id } = useParams
+  const [visible, setVisible] = useState(false)
 
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: "solid",
+    border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
-  };
-
-  const handleLike = async () => {
-    const updatedBlog = {
-      ...blog,
-      likes: blog.likes + 1,
-      user: blog.user,
-    };
-    try {
-      const returnedBlog = await blogService.update(blog.id, updatedBlog);
-      updateBlog(returnedBlog);
-    } catch (error) {
-      console.error("Error updating blog:", error);
-    }
-  };
+  }
 
   const toggle = () => {
-    setVisible(!visible);
-  };
+    setVisible(!visible)
+  }
 
   return (
     <div style={blogStyle}>
       <div className="blog-header">
-        {blog.title} {blog.author}
-        <button onClick={toggle}>{visible ? "hide" : "view"}</button>
+        <Link to={`/blogs/${blog.id}`}> {blog.title} {blog.author}</Link>
+        {/* <button onClick={toggle}>{visible ? 'hide' : 'view'}</button> */}
       </div>
       {visible && (
         <div className="blog-details">
@@ -43,7 +30,7 @@ const Blog = ({ blog, updateBlog, handleDelete }) => {
           <p>
             {blog.likes} likes <button onClick={handleLike}>like</button>
           </p>
-          <p>{blog.user ? blog.user.name : "Unknown user"}</p>
+          <p>{blog.user ? blog.user.name : 'Unknown user'}</p>
           <button
             onClick={() => handleDelete(blog.id, blog.title, blog.author)}
           >
@@ -52,24 +39,24 @@ const Blog = ({ blog, updateBlog, handleDelete }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
 Blog.propTypes = {
   blog: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    author: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    likes: PropTypes.number.isRequired,
+    id: PropTypes.string,
+    title: PropTypes.string,
+    author: PropTypes.string,
+    url: PropTypes.string,
+    likes: PropTypes.number,
     user: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      username: PropTypes.string.isRequired,
+      id: PropTypes.string,
+      name: PropTypes.string,
+      username: PropTypes.string,
     }),
   }).isRequired,
-  updateBlog: PropTypes.func.isRequired,
-  handleDelete: PropTypes.func.isRequired,
-};
+  updateBlog: PropTypes.func,
+  handleDelete: PropTypes.func,
+}
 
-export default Blog;
+export default Blog

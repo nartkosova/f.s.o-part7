@@ -24,18 +24,22 @@ blogsRouter.get("/", async (request, response) => {
   }
 });
 
-blogsRouter.get("/:id", async (request, response, next) => {
+blogsRouter.get('/:id', async (request, response, next) => {
   try {
-    const blog = await Blog.findById(request.params.id);
+    const blog = await Blog.findById(request.params.id).populate('user', {
+      username: 1,
+      name: 1,
+      id: 1,
+    })
     if (blog) {
-      response.json(blog);
+      response.json(blog)
     } else {
-      response.status(404).end();
+      response.status(404).end()
     }
   } catch (error) {
-    next(error);
+    next(error)
   }
-});
+})
 blogsRouter.post("/", async (request, response) => {
   try {
     const body = request.body;
