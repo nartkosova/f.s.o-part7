@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import blogService from '../services/blogs'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 const BlogView = ({ handleLike }) => {
   const { id } = useParams()
@@ -25,12 +26,19 @@ const BlogView = ({ handleLike }) => {
   }
 
   return (
-    <div className="blog-details">
-      <a href={blog.url}>{blog.url}</a>
-      <p>
-        {blog.likes} likes <button onClick={handleLike}>like</button>
+    <div className="container mt-4 p-3 border rounded shadow-sm bg-light">
+      <a href={blog.url} target="_blank" rel="noopener noreferrer" className="d-block mb-3 text-primary">
+        {blog.url}
+      </a>
+      <p className="mb-2">
+        {blog.likes} likes{' '}
+        <button onClick={handleLike} className="btn btn-outline-primary btn-sm ms-2">
+          like
+        </button>
       </p>
-      <p>added by {blog.user ? blog.user.name : 'Unknown user'}</p>
+      <p className="text-muted">
+        added by {blog.user ? blog.user.name : 'Unknown user'}
+      </p>
     </div>
   )
 }

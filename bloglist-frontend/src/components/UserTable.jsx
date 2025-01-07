@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import userService from '../services/users'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 const UserTable = () => {
   const {
@@ -22,10 +23,10 @@ const UserTable = () => {
   }
 
   return (
-    <div>
-      <h2>Users</h2>
-      <table>
-        <thead>
+    <div className="container mt-4 p-3 border rounded shadow-sm bg-light">
+      <h2 className="mb-3">Users</h2>
+      <table className="table table-striped table-bordered">
+        <thead className="table-light">
           <tr>
             <th>User</th>
             <th>Number of Blogs</th>
@@ -34,13 +35,17 @@ const UserTable = () => {
         <tbody>
           {users.length === 0 ? (
             <tr>
-              <td colSpan="2">No users found</td>
+              <td colSpan="2" className="text-center">
+                No users found
+              </td>
             </tr>
           ) : (
             users.map((user) => (
               <tr key={user.id}>
                 <td>
-                  <Link to={`/users/${user.id}`}>{user.name}</Link>
+                  <Link to={`/users/${user.id}`} className="text-decoration-none">
+                    {user.name}
+                  </Link>
                 </td>
                 <td>{user.blogs ? user.blogs.length : 0}</td>
               </tr>

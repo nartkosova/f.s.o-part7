@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Link, useParams } from 'react-router-dom'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 const Blog = ({ blog, updateBlog, handleDelete, handleLike }) => {
   const { id } = useParams
@@ -19,25 +20,14 @@ const Blog = ({ blog, updateBlog, handleDelete, handleLike }) => {
   }
 
   return (
-    <div style={blogStyle}>
-      <div className="blog-header">
-        <Link to={`/blogs/${blog.id}`}> {blog.title} {blog.author}</Link>
-        {/* <button onClick={toggle}>{visible ? 'hide' : 'view'}</button> */}
+    <div className="card mb-3">
+      <div className="card-body">
+        <h5 className="card-title">
+          <Link to={`/blogs/${blog.id}`} className="text-decoration-none">
+            {blog.title} <span className="text-muted">by {blog.author}</span>
+          </Link>
+        </h5>
       </div>
-      {visible && (
-        <div className="blog-details">
-          <p>{blog.url}</p>
-          <p>
-            {blog.likes} likes <button onClick={handleLike}>like</button>
-          </p>
-          <p>{blog.user ? blog.user.name : 'Unknown user'}</p>
-          <button
-            onClick={() => handleDelete(blog.id, blog.title, blog.author)}
-          >
-            delete
-          </button>
-        </div>
-      )}
     </div>
   )
 }

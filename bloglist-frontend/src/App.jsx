@@ -127,13 +127,23 @@ const App = () => {
     const hideWhenVisible = { display: blogVisible ? 'none' : '' }
     const showWhenVisible = { display: blogVisible ? '' : 'none' }
     return (
-      <div>
+      <div className="container my-4 p-3 border rounded shadow-sm bg-light">
         <div style={hideWhenVisible}>
-          <button onClick={() => setBlogVisible(true)}>new blog</button>
+          <button
+            className="btn btn-primary"
+            onClick={() => setBlogVisible(true)}
+          >
+          New Blog
+          </button>
         </div>
         <div style={showWhenVisible}>
           <BlogForm createBlog={createBlog} />
-          <button onClick={() => setBlogVisible(false)}>cancel</button>
+          <button
+            className="btn btn-secondary mt-3"
+            onClick={() => setBlogVisible(false)}
+          >
+          Cancel
+          </button>
         </div>
       </div>
     )
@@ -148,14 +158,14 @@ const App = () => {
     return (
       <div>
         <Notification message={notification} isError={isError} />
-        <h2>Log in to application</h2>
+        <h2 className='p-4'>Log in to application</h2>
         <LoginForm handleLogin={handleLogin} />
       </div>
     )
   }
   const Blogs = ( handleDelete, handleLike ) => {
     return (
-      <div>
+      <div className='px-3'>
         {blogForm()}
         {sortedBlogs.map((blog) => (
           <Blog key={blog.id} blog={blog} handleDelete={handleDelete} handleLike={handleLike}/>
@@ -168,7 +178,7 @@ const App = () => {
     <div>
       <Notification message={notification} isError={isError} />
       <Navbar user={user} handleLogout={handleLogout} handleLogin={handleLogin}/>
-      <h2>Blogs</h2>
+      <h2 className='p-3'>Blogs</h2>
       <Routes>
         <Route path='/' element={<Blogs handleDelete={handleDelete} handleLike={handleLike}/>}/>
         <Route path="/users" element={<UserTable users={userBlogsCount}/>} />
